@@ -1,8 +1,22 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
 const TeamForm = props =>{
-    const {values, onInputChange, onSubmit} = props
+    const {values, onInputChange, onSubmit, isEditing} = props
+        
+    const [buttonText, setButtonText] = useState("submit")
 
+    useEffect(()=>{
+
+        if(isEditing){
+            console.log("is editing")
+            setButtonText("update")
+        }else{
+            console.log("not editing")
+            setButtonText("submit")
+        }
+        
+    },[isEditing])
+   
     return (
         <div>
             <form>
@@ -28,7 +42,7 @@ const TeamForm = props =>{
                     name='role'
                     type='text'/>
                 </label>
-                <button onClick={onSubmit}>submit</button>
+                <button onClick={onSubmit}>{buttonText}</button>
             </form>
         </div>
     )
