@@ -1,24 +1,55 @@
-import React from 'react';
+import React, {useState} from 'react';
 import logo from './logo.svg';
 import './App.css';
+import TeamMember from './TeamMebmer.js';
+import TeamForm from './TeamForm.js';
+
+const initialTeamList = [{
+  name:'team',
+  email: 'me@email.com',
+  role: 'engineer'
+}]
+
+const initialFormValues = {
+  name:'',
+  email:'',
+  role:''
+}
 
 function App() {
+  const [teamMembers, setTeamMembers] = useState(initialTeamList)
+  const [formValues, setFormValues] = useState(initialFormValues)
+
+  const onInputChange = event =>{
+    const name = event.target.name
+    const value = event.target.value
+    setFormValues({...formValues, [name]: value})
+  }
+  const onSubmit = event =>{
+    event.preventDefault()
+    const newTeamMember = {
+      name: formValues.name,
+      email: formValues.email,
+      role: formValues.role
+    }
+    setTeamMembers([...teamMembers, newTeamMember])
+    setFormValues(initialFormValues)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <header><h1>Team Members App</h1></header>
+      {
+        teamMembers.map(teamMember => {
+          return (
+            <TeamMember key={teamMember.id} details={teamMember} />
+          )
+        })
+      }
+      <TeamForm 
+      values={formValues}
+      onInputChange={onInputChange}
+      onSubmit={onSubmit}/>
     </div>
   );
 }
